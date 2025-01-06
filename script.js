@@ -1,67 +1,47 @@
-let countdownTimer;
 let selectedCells = [];
-let isPracticeMode = true;  // 当前是练习模式还是正式测试
 let isTestStarted = false;  // 标识是否进入正式测试
 
-// 词语数组：练习和正式测试各自不同
-let practiceWords = [
-    ["儿子", "东西", "我门", "爸爸", "老狮", "睡觉", "椅子", "学校", "冬天", "深体"],
-    ["说话", "事晴", "生日", "方便", "公园", "自油", "护照", "下雨", "里想", "浪漫"]
-];
-let practiceCorrectAnswers = [
-    [0, 0, 1, 0, 1, 0, 0, 0, 0, 1],
-    [0, 1, 0, 0, 0, 1, 0, 0, 1, 0]
-];
-
-let testWords =  [
-    ["汉语", "读书", "朋有", "认识", "咖非", "米饭", "医声", "杯子", "在见", "猫狗"],
-    ["分中", "后面", "妈妈", "星其", "名字", "工做", "睡觉", "高兴", "学习", "店话"],
-    ["唱哥", "房间", "眼精", "可以", "说话", "跑布", "阿姨", "蛋是", "问题", "好吃"],
-    ["觉得", "足求", "告诉", "游永", "西瓜", "工司", "块乐", "时间", "以经", "运动"],
-    ["成市", "冰箱", "相信", "环境", "附进", "记得", "决定", "奇实", "认为", "儿且"],
-    ["洗早", "发现", "炼习", "方便", "干净", "面包", "邦忙", "担心", "薪闻", "最后"],
-    ["可昔", "保护", "海阳", "世纪", "手先", "打扰", "吃京", "美丽", "友好", "合事"],
-    ["普遍", "客听", "骄傲", "广诰", "短信", "好象", "结果", "作位", "幸福", "讨论"],
-    ["流览", "阶段", "分晰", "唯一", "朗读", "争钱", "沙摊", "满足", "点心", "气分"],
-    ["壮态", "证明", "存再", "模仿", "刚铁", "吃亏", "曾经", "婚姻", "炒架", "意义"],
-    ["掩护", "绷溃", "公民", "保母", "机智", "乐意", "喜月", "提义", "后代", "气味"],
-    ["拼因", "手指", "作文", "团园", "草率", "迷惑", "反思", "瀑布", "纺问", "高明"]
+// 词语数组：正式测试的词语和正确答案
+let testWords = [
+    ['作', '心', '部', '开', '情', '最', '或', '公', '必', '农'],
+    ['强', '花', '连', '乐', '效', '城', '拉', '势', '围', '议'],
+    ['突', '富', '模', '错', '男', '款', '茶', '网', '祝', '联'],
+    ['阶', '党', '县', '妇', '圆', '毒', '献', '哲', '鬼', '妻'],
+    ['汗', '煤', '潜', '震', '贡', '艰', '融', '肩', '贴', '兼'],
+    ['裁', '闲', '桃', '牢', '寺', '仓', '扇', '嘉', '饼', '傲'],
+    ['脉', '岩', '荡', '腹', '芽', '饲', '膀', '斥', '胎', '鹿'],
+    ['甸', '巢', '譬', '契', '凳', '溃', '倘', '衍', '髓', '鸽'],
+    ['僵', '膊', '爵', '挪', '钥', '羡', '兑', '拧', '删', '惦'],
+    ['秦', '藻', '蚀', '巫', '绷', '菩', '颓', '汛', '嫦', '诽']
 ];
 let testCorrectAnswers = [
-    ["0", "0", "1", "0", "1", "0", "1", "0", "1", "0"],
-    ["1", "0", "0", "1", "0", "1", "0", "0", "0", "1"],
-    ["1", "0", "1", "0", "0", "1", "0", "1", "0", "0"],
-    ["0", "1", "0", "1", "0", "1", "1", "0", "1", "0"],
-    ["1", "0", "0", "0", "1", "0", "0", "1", "0", "1"],
-    ["1", "0", "1", "0", "0", "0", "1", "0", "1", "0"],
-    ["1", "0", "1", "0", "1", "0", "1", "0", "0", "1"],
-    ["0", "1", "0", "1", "0", "1", "0", "1", "0", "0"],
-    ["1", "0", "1", "0", "0", "1", "1", "0", "0", "1"],
-    ["1", "0", "1", "0", "1", "0", "0", "0", "1", "0"],
-    ["0", "1", "0", "1", "0", "0", "1", "1", "0", "0"],
-    ["1", "0", "0", "1", "0", "0", "0", "0", "1", "0"]
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ];
-
-let totalTime = 40;  // 倒计时总时长
 
 document.addEventListener("DOMContentLoaded", function() {
     // 页面加载完成后显示图片（指导语），并准备好表格
-    displayImage("image.png");  // 显示指导语的图片（你可以替换为实际的指导语）
+    displayImage("image.png");  // 显示指导语的图片
     
-    // 监听按键事件，只有按下空格键时才开始进入练习或测试
+    // 监听按键事件，按下回车进入正式测试
     document.addEventListener("keydown", function(event) {
-        if (event.key === " " || event.keyCode === 32) {
+        if (event.key === "Enter") {
             if (!isTestStarted) {
-                // 隐藏指导语并进入练习模式
+                // 隐藏指导语并进入正式测试模式
                 hideImage();
-                createTable(practiceWords, practiceCorrectAnswers); // 创建练习用的表格
-                startPracticeMode();
+                startTestMode();  // 进入正式测试
             }
-        } else if (event.key === "Enter") {
-            if (isPracticeMode) {
-                // 练习结束，按下回车进入正式测试
-                startTestMode();
-            }
+        } else if (event.key === " " && isTestStarted) {
+            // 按空格结束实验并下载结果文件
+            calculateResults();  // 计算结果
         }
     });
 });
@@ -88,45 +68,11 @@ function hideImage() {
     }
 }
 
-// 练习模式：无倒计时，直接进行词语选择
-function startPracticeMode() {
-    isPracticeMode = true;  // 保持练习模式标记为true
-    selectedCells = [];  // 清空之前的选择
-    alert("练习开始，按下回车进入正式测试！");
-}
-
-// 正式测试模式：开始倒计时
+// 正式测试模式：开始创建表格
 function startTestMode() {
     isTestStarted = true;  // 进入正式测试
     selectedCells = [];  // 清空之前的选择
     createTable(testWords, testCorrectAnswers);  // 创建正式测试的表格
-    createCountdown();  // 显示倒计时
-    startCountdown();  // 开始倒计时
-}
-
-// 创建倒计时显示元素
-function createCountdown() {
-    let countdownElement = document.createElement("div");
-    countdownElement.id = "countdown";  // 给倒计时元素一个ID
-    countdownElement.style.fontSize = "30px";  // 设置字体大小
-    countdownElement.style.textAlign = "center"; // 居中显示
-    countdownElement.style.marginTop = "20px"; // 为倒计时添加一些顶部间距
-    document.body.appendChild(countdownElement);  // 将倒计时元素添加到页面
-}
-
-// 开始倒计时
-function startCountdown() {
-    let countdownElement = document.getElementById("countdown");
-    countdownElement.textContent = totalTime;  // 显示倒计时初始值
-
-    countdownTimer = setInterval(function() {
-        totalTime--;
-        countdownElement.textContent = totalTime;  // 更新倒计时
-        if (totalTime <= 0) {
-            clearInterval(countdownTimer);  // 停止倒计时
-            calculateResults();  // 倒计时结束后计算结果
-        }
-    }, 1000);
 }
 
 // 创建表格
@@ -169,7 +115,7 @@ function calculateResults() {
     let incorrectCount = 0;
     let detailedResults = [];
 
-    let currentAnswers = isTestStarted ? testCorrectAnswers : practiceCorrectAnswers;  // 根据当前模式选择答案
+    let currentAnswers = testCorrectAnswers;  // 只考虑正式测试的答案
 
     for (let i = 0; i < currentAnswers.length; i++) {
         for (let j = 0; j < currentAnswers[i].length; j++) {
@@ -178,7 +124,7 @@ function calculateResults() {
 
             // 判断正确与否
             let result = {
-                word: (isTestStarted ? testWords : practiceWords)[i][j],
+                word: testWords[i][j],
                 isSelected: isSelected,
                 isCorrect: isCorrect,
                 isAnswerCorrect: (isSelected === isCorrect)
