@@ -28,6 +28,11 @@ let testCorrectAnswers = [
 ];
 
 document.addEventListener("DOMContentLoaded", function() {
+    userFileName = prompt("请输入保存CSV文件的名称（不需要扩展名）", "results");
+if (!userFileName) {  // 如果用户没有输入文件名，使用默认值
+    userFileName = "results";
+}
+
     // 页面加载完成后显示图片（指导语），并准备好表格
     displayImage("image.png");  // 显示指导语的图片
     
@@ -173,6 +178,6 @@ function exportCSV(detailedResults, correctCount, incorrectCount) {
     let encodedUri = encodeURI(csvContent);
     let link = document.createElement("a");
     link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "results.csv");
+    link.setAttribute("download", `${userFileName}.csv`);  // 使用用户输入的文件名保存
     link.click();
 }
